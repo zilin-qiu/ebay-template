@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  * { box-sizing: border-box; font-family: Arial, Helvetica, sans-serif; }
+  body { margin: 0; background: #f4f4f4; color: #333; }
+
+  :root{
+    /* switched from green theme to black/red theme */
+    --green:#2b2b2b;        /* header/footer base (black) */
+    --green-dark:#2b2b2b;   /* fallback dark */
+    --gold:#f0d17a;         /* keep as accent (optional) */
+
+    --border:#dcdcdc;
+    --panel:#ffffff;
+    --soft:#f7f7f7;
+    --text:#333;
+
+    --red:#c62828;
+  }
+
+  .wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: var(--panel);
+    border: 1px solid var(--border);
+  }
+
+  /* HEADER */
+  .topbar {
+    background: var(--green); /* black */
+    color: #fff;
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+  }
+
+  .topbar-row1{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:16px 18px 10px;
+    flex-wrap:wrap;
+  }
+
+  .logo {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .trust-mini{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    font-size:12px;
+    opacity:0.95;
+  }
+
+  .titem{ display:flex; align-items:center; gap:6px; white-space:nowrap; }
+  .ticon{
+    width:18px;height:18px;border-radius:50%;
+    border:1px solid rgba(255,255,255,0.45);
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:11px;line-height:1;
+  }
+
+  .topnav{
+    display:flex;
+    gap:10px;
+    padding:10px 18px 14px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    flex-wrap:wrap;
+  }
+
+  .topnav a{
+    color:#fff;
+    text-decoration:none;
+    font-size:12px;
+    padding:6px 8px;
+    border-radius:3px;
+  }
+  .topnav a:hover{ text-decoration:underline; }
+
+  /* LAYOUT */
+  .layout {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    align-items: flex-start;
+    background:#fff;
+  }
+
+  /* SIDEBAR */
+  .sidebar { width: 260px; flex: 0 0 260px; }
+
+  .side-box {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 12px;
+  }
+
+  .side-head {
+    background: linear-gradient(135deg, #2b2b2b, var(--red)); /* black-red gradient */
+    color: #fff;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  .side-body { padding: 10px 12px; }
+
+  .side-list { list-style: none; padding: 0; margin: 0; }
+  .side-list li { border-bottom: 1px solid #eee; }
+  .side-list li:last-child { border-bottom: 0; }
+
+  .side-list a {
+    display: block;
+    padding: 8px 0;
+    color: #333;
+    text-decoration: none;
+    font-size: 12px;
+  }
+  .side-list a:hover { text-decoration: underline; }
+
+  /* Sidebar media icons (logistics & payment) */
+  .side-media {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: #fff;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .side-media .side-head {
+    background: linear-gradient(135deg, #2b2b2b, var(--red)); /* black-red gradient */
+  }
+
+  .media-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+    padding:12px;
+    align-items:center;
+  }
+  .media-card{
+    border:1px solid #eee;
+    border-radius:3px;
+    background:#fafafa;
+    padding:10px;
+    text-align:center;
+    font-size:11px;
+    color:#555;
+  }
+
+  /* keep these badges/logo/brand icons on white */
+  .media-card img,
+  .payrow img{
+    background:#fff;
+  }
+
+  .media-card img{
+    max-width:100%;
+    height:28px;
+    width:auto;
+    display:block;
+    margin:0 auto 6px;
+  }
+
+  .badge-stack { display: grid; gap: 10px; }
+  .badge {
+    border: 1px solid #eee;
+    border-radius: 3px;
+    padding: 10px;
+    background: #fafafa;
+    text-align: center;
+    font-size: 12px;
+    color: #444;
+  }
+  .badge strong { display:block; font-size:14px; color:#333; }
+
+  /* MAIN */
+  .main { flex: 1; min-width: 0; }
+
+  .title {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: #fff;
+    padding: 10px 12px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2b2b2b;
+    margin-bottom: 12px;
+  }
+
+  /* GALLERY (CSS-only) — desktop: thumbs RIGHT; mobile: thumbs BELOW */
+  .gallery {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 12px;
+  }
+
+  .g-radio { position: absolute; left: -9999px; }
+
+  .gallery-inner{
+    display:flex;
+    align-items:stretch;
+  }
+
+  .main-view{
+    flex:1;
+    background:#fff;
+    border-right:1px solid var(--border);
+  }
+
+  /* Square white canvas for images (non-square gets white background) */
+  .gallery .main-view .slide{
+    display:none;
+    aspect-ratio: 4 / 3;
+    background:#fff;
+    align-items:center;
+    justify-content:center;
+  }
+  .gallery .main-view .slide img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background:#fff;
+    display:block;
+  }
+
+  #g1:checked ~ .gallery-inner .main-view .s1 { display:flex; }
+  #g2:checked ~ .gallery-inner .main-view .s2 { display:flex; }
+  #g3:checked ~ .gallery-inner .main-view .s3 { display:flex; }
+  #g4:checked ~ .gallery-inner .main-view .s4 { display:flex; }
+  #g5:checked ~ .gallery-inner .main-view .s5 { display:flex; }
+  #g6:checked ~ .gallery-inner .main-view .s6 { display:flex; }
+
+  .thumbs-vert{
+    width:88px;
+    flex:0 0 88px;
+    padding:10px;
+    background: var(--soft);
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  .thumbs-vert label{
+    cursor:pointer;
+    border:1px solid #ddd;
+    border-radius:3px;
+    overflow:hidden;
+
+    /* square white canvas */
+    aspect-ratio: 1 / 1;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .thumbs-vert img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:#fff;
+    display:block;
+  }
+
+  /* Mobile thumbs (below main image) */
+  .thumbs-horz{
+    display:none;
+    gap:8px;
+    padding:10px;
+    border-top:1px solid var(--border);
+    background: var(--soft);
+  }
+  .thumbs-horz label{
+    flex:1;
+    cursor:pointer;
+    border:1px solid #ddd;
+    border-radius:3px;
+    overflow:hidden;
+
+    /* square white canvas */
+    aspect-ratio: 1 / 1;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .thumbs-horz img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:#fff;
+    display:block;
+  }
+
+  #g1:checked ~ .gallery-inner .thumbs-vert label[for="g1"],
+  #g2:checked ~ .gallery-inner .thumbs-vert label[for="g2"],
+  #g3:checked ~ .gallery-inner .thumbs-vert label[for="g3"],
+  #g4:checked ~ .gallery-inner .thumbs-vert label[for="g4"],
+  #g5:checked ~ .gallery-inner .thumbs-vert label[for="g5"],
+  #g6:checked ~ .gallery-inner .thumbs-vert label[for="g6"],
+  #g1:checked ~ .thumbs-horz label[for="g1"],
+  #g2:checked ~ .thumbs-horz label[for="g2"],
+  #g3:checked ~ .thumbs-horz label[for="g3"],
+  #g4:checked ~ .thumbs-horz label[for="g4"],
+  #g5:checked ~ .thumbs-horz label[for="g5"],
+  #g6:checked ~ .thumbs-horz label[for="g6"]{
+    border-color:#b08a2a;
+    box-shadow: inset 0 0 0 1px #b08a2a;
+  }
+
+  /* PANELS */
+  .panel {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 12px;
+  }
+
+  .panel-head {
+    background: linear-gradient(135deg, #2b2b2b, var(--red)); /* black-red gradient */
+    color: #fff;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+  }
+
+  .panel-body {
+    padding: 12px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* BUYER INFO: desktop as cards; mobile keeps accordion */
+  .info-sections { margin-top: 12px; }
+
+  .desktop-cards{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:12px;
+  }
+
+  .card{
+    border:1px solid var(--border);
+    border-radius:6px;
+    overflow:hidden;
+    background:#fff;
+  }
+  .card-header{
+    background: linear-gradient(135deg, #2b2b2b, var(--red)); /* black-red gradient */
+    color:#fff;
+    padding:10px 12px;
+    font-weight:bold;
+    font-size:13px;
+  }
+  .card-body{
+    padding:12px;
+    font-size:12px;
+    line-height:1.6;
+  }
+
+  /* Mobile accordion */
+  .acc { display:none; }
+  details.acc-item {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    margin-bottom: 10px;
+    background: #fff;
+    overflow: hidden;
+  }
+  details.acc-item summary{
+    list-style:none;
+    cursor:pointer;
+    padding:12px;
+    background: #2b2b2b; /* keep black on mobile header */
+    color:#fff;
+    font-weight:bold;
+    font-size:13px;
+  }
+  details.acc-item summary::-webkit-details-marker{ display:none; }
+  .acc-body{ padding:12px; font-size:12px; line-height:1.6; }
+
+  /* Mobile collapsible sidebar */
+  details.side-collapsible { display:none; }
+  details.side-collapsible summary{
+    list-style:none;
+    cursor:pointer;
+    padding:12px;
+    background: #2b2b2b; /* black */
+    color:#fff;
+    font-weight:bold;
+    border-radius:3px;
+    margin-bottom:10px;
+  }
+  details.side-collapsible summary::-webkit-details-marker{ display:none; }
+
+  /* FOOTER BOTTOM BAR */
+  .footerbar{
+    background: #2b2b2b; /* black */
+    color: #eaf2ff;
+    padding: 18px;
+    border-top: 3px solid var(--red); /* red accent */
+  }
+
+  .footerbar-inner{
+    display:flex;
+    gap:18px;
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+
+  .fcol{
+    flex:1;
+    min-width:180px;
+    font-size:12px;
+    line-height:1.6;
+  }
+
+  .fcol h4{
+    margin:0 0 10px;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    color:#fff;
+  }
+
+  .fcol a{
+    color:#eaf2ff;
+    text-decoration:none;
+    display:inline-block;
+    margin:2px 0;
+  }
+  .fcol a:hover{ text-decoration:underline; }
+
+  .payrow{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+    align-items:center;
+  }
+
+  .payrow img{
+    height:22px;
+    width:auto;
+    display:block;
+    border-radius:3px;
+    padding:3px 6px;
+  }
+
+  .copyright{
+    text-align:center;
+    font-size:11px;
+    opacity:0.9;
+    margin-top:14px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 820px){
+    .layout{ flex-direction:column; }
+    .sidebar{ width:100%; flex: 1 1 auto; }
+    .main{ width:100%; }
+
+    /* sidebar collapse */
+    .sidebar .side-box,
+    .sidebar .side-media,
+    .sidebar .badge-stack{ display:none; }
+    details.side-collapsible{ display:block; }
+
+    /* gallery: thumbs below */
+    .gallery-inner{ display:block; }
+    .main-view{ border-right:0; }
+    .thumbs-vert{ display:none; }
+    .thumbs-horz{ display:flex; }
+
+    /* buyer info: desktop cards hidden, accordion shown */
+    .desktop-cards{ display:none; }
+    .acc{ display:block; }
+
+    .payrow{ justify-content:flex-start; }
+  }
+</style>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="topbar">
+    <div class="topbar-row1">
+      <div class="logo">
+        <a href="https://www.ebay.de/str/rlaudin" target="_blank" style="display:inline-block;">
+          <img src="https://www.tradelaudin.com/assets/img/logo.png"
+               alt="Laudin Logo"
+               style="height:40px;width:auto;display:block;">
+        </a>
+      </div>
+      <div class="trust-mini">
+        <div class="titem"><span class="ticon">✓</span>Schneller Versand</div>
+        <div class="titem"><span class="ticon">✓</span>100% Zufriedenheit</div>
+        <div class="titem"><span class="ticon">✓</span>Premium-Qualität</div>
+      </div>
+    </div>
+    <div class="topnav">
+      <a href="https://www.ebay.de/str/rlaudin" target="_blank">Shop besuchen</a>
+      <a href="https://www.ebay.de/str/rlaudin?_tab=feedback" target="_blank">Feedback anzeigen</a>
+      <a href="https://www.ebay.de/cnt/intermediatedFAQ?requested=tradelaudin" target="_blank">Kundenservice</a>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <!-- MOBILE COLLAPSIBLE SIDEBAR -->
+      <details class="side-collapsible">
+        <summary>Store Menu</summary>
+
+        <div class="side-box" style="display:block;margin-bottom:12px;">
+          <div class="side-head">Shop-Kategorien</div>
+          <div class="side-body">
+            <ul class="side-list">
+              <li><a href="https://www.ebay.de/str/rlaudin/Steuergerate-ECU/_i.html?store_cat=44825804016" target="_blank">Steuergeräte (ECU)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Lenkgetriebe-Steering/_i.html?store_cat=44825805016" target="_blank">Lenkgetriebe (Steering)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Stosdampfer-Shocks/_i.html?store_cat=44825806016" target="_blank">Stoßdämpfer (Shocks)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Schalter-Bedien-Switch/_i.html?store_cat=44825807016" target="_blank">Schalter &amp; Bedien. (Switch)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Motor-Teile-Engine/_i.html?store_cat=44825815016" target="_blank">Motor &amp; Teile (Engine)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Kombiinstr-Cluster/_i.html?store_cat=44825808016" target="_blank">Kombiinstr. (Cluster)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Sensoren-Sensors/_i.html?store_cat=44825811016" target="_blank">Sensoren (Sensors)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Getriebe-Transmission/_i.html?store_cat=44825812016" target="_blank">Getriebe (Transmission)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Klimakompr-A-C-Comp/_i.html?store_cat=44825813016" target="_blank">Klimakompr. (A/C Comp.)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Fahrwerk-Achse-Susp/_i.html?store_cat=44825814016" target="_blank">Fahrwerk &amp; Achse (Susp.)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Bremsen-Brake/_i.html?store_cat=44829096016" target="_blank">Bremsen (Brake)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Beleuchtung-Lighting/_i.html?store_cat=44829116016" target="_blank">Beleuchtung (Lighting)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Navi-Display-Media/_i.html?store_cat=44829218016" target="_blank">Navi &amp; Display (Media)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Karosserie-Body/_i.html?store_cat=44832290016" target="_blank">Karosserie (Body)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Pumpe-Pump/_i.html?store_cat=44840066016" target="_blank">Pumpe (Pump)</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin/Sonstiges/_i.html?store_cat=1" target="_blank">Sonstiges</a></li>
+            </ul>
+          </div>
+        </div>
+
+      <!--
+        <div class="side-box" style="display:block;margin-bottom:12px;">
+          <div class="side-head">Useful Links</div>
+          <div class="side-body">
+            <ul class="side-list">
+              <li><a href="https://www.ebay.de/str/rlaudin" target="_blank">Visit Our eBay Store</a></li>
+              <li><a href="https://www.ebay.de/cnt/intermediatedFAQ?requested=tradelaudin" target="_blank">Email / Contact Us</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin" target="_blank">View Feedback</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin" target="_blank">About Us</a></li>
+              <li><a href="https://www.ebay.de/str/rlaudin" target="_blank">Add to Favorite Seller</a></li>
+            </ul>
+          </div>
+        </div>
+      -->
+        
+
+      </details>
+      
+
+      <!-- DESKTOP SIDEBAR -->
+      <div class="side-box">
+        <div class="side-head">Store Categories</div>
+        <div class="side-body">
+          <ul class="side-list">
+            <li><a href="https://www.ebay.de/str/rlaudin/Steuergerate-ECU/_i.html?store_cat=44825804016" target="_blank">Steuergeräte (ECU)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Lenkgetriebe-Steering/_i.html?store_cat=44825805016" target="_blank">Lenkgetriebe (Steering)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Stosdampfer-Shocks/_i.html?store_cat=44825806016" target="_blank">Stoßdämpfer (Shocks)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Schalter-Bedien-Switch/_i.html?store_cat=44825807016" target="_blank">Schalter &amp; Bedien. (Switch)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Motor-Teile-Engine/_i.html?store_cat=44825815016" target="_blank">Motor &amp; Teile (Engine)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Kombiinstr-Cluster/_i.html?store_cat=44825808016" target="_blank">Kombiinstr. (Cluster)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Sensoren-Sensors/_i.html?store_cat=44825811016" target="_blank">Sensoren (Sensors)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Getriebe-Transmission/_i.html?store_cat=44825812016" target="_blank">Getriebe (Transmission)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Klimakompr-A-C-Comp/_i.html?store_cat=44825813016" target="_blank">Klimakompr. (A/C Comp.)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Fahrwerk-Achse-Susp/_i.html?store_cat=44825814016" target="_blank">Fahrwerk &amp; Achse (Susp.)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Bremsen-Brake/_i.html?store_cat=44829096016" target="_blank">Bremsen (Brake)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Beleuchtung-Lighting/_i.html?store_cat=44829116016" target="_blank">Beleuchtung (Lighting)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Navi-Display-Media/_i.html?store_cat=44829218016" target="_blank">Navi &amp; Display (Media)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Karosserie-Body/_i.html?store_cat=44832290016" target="_blank">Karosserie (Body)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Pumpe-Pump/_i.html?store_cat=44840066016" target="_blank">Pumpe (Pump)</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin/Sonstiges/_i.html?store_cat=1" target="_blank">Sonstiges</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!--
+      <div class="side-box">
+        <div class="side-head">Useful Links</div>
+        <div class="side-body">
+          <ul class="side-list">
+            <li><a href="https://www.ebay.de/str/rlaudin" target="_blank">Visit Our eBay Store</a></li>
+            <li><a href="https://www.ebay.de/cnt/intermediatedFAQ?requested=tradelaudin" target="_blank">Email / Contact Us</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin" target="_blank">View Feedback</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin" target="_blank">About Us</a></li>
+            <li><a href="https://www.ebay.de/str/rlaudin" target="_blank">Add to Favorite Seller</a></li>
+          </ul>
+        </div>
+      </div>
+      -->
+      
+      <div class="badge-stack">
+        <a href="https://www.ebay.de/str/rlaudin" target="_blank" style="display:block;position:relative;text-decoration:none;">
+          <img src="https://i.frg.im/beHtwdqY/big-sale.jpeg?v=1772432517.9?v=517c7584-6faf-469c-84d9-1dda13d7a22a"
+               alt="Big Sales"
+               style="width:100%;display:block;">
+
+          <div style="
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+            color:#ffffff;
+            font-size:22px;
+            font-weight:bold;
+            text-transform:uppercase;
+          ">
+            Big Sales
+          </div>
+        </a>
+
+        <!-- ??? -->
+        <div class="badge" style="
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          padding:15px;">
+          <img src="https://i.frg.im/eimwuyvS/dhl.png?v=1772431404.73?v=77adeaf2-8581-4bf8-9faa-52822c795cd3"
+               alt="Promotion 2"
+               style="width:60%;height:auto;display:block;">
+        </div>
+
+        <!-- ??? -->
+        <div class="badge">
+          <img src="https://i.frg.im/owCqOMam/100garantie.png?v=1772431400.743?v=82f41ef1-cf0c-4dac-8353-d997a19cde48"
+               alt="Guarantee"
+               style="width:100%;height:auto;display:block;">
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <div class="title">{{ title }}</div>
+
+      <!-- CSS-ONLY IMAGE SLIDER -->
+      <div class="gallery">
+        <input class="g-radio" type="radio" name="gal" id="g1" checked>
+        <input class="g-radio" type="radio" name="gal" id="g2">
+        <input class="g-radio" type="radio" name="gal" id="g3">
+        <input class="g-radio" type="radio" name="gal" id="g4">
+        <input class="g-radio" type="radio" name="gal" id="g5">
+        <input class="g-radio" type="radio" name="gal" id="g6">
+
+        <div class="gallery-inner">
+          <div class="main-view">
+            <div class="slide s1"><img src="{{ images[0].url }}" alt="Product image 1"></div>
+            <div class="slide s2"><img src="{{ images[1].url }}" alt="Product image 2"></div>
+            <div class="slide s3"><img src="{{ images[2].url }}" alt="Product image 3"></div>
+            <div class="slide s4"><img src="{{ images[3].url }}" alt="Product image 4"></div>
+            <div class="slide s5"><img src="{{ images[4].url }}" alt="Product image 5"></div>
+            <div class="slide s6"><img src="{{ images[5].url }}" alt="Product image 6"></div>
+          </div>
+
+          <div class="thumbs-vert">
+            <label for="g1"><img src="{{ images[0].url }}" alt="Thumb 1"></label>
+            <label for="g2"><img src="{{ images[1].url }}" alt="Thumb 2"></label>
+            <label for="g3"><img src="{{ images[2].url }}" alt="Thumb 3"></label>
+            <label for="g4"><img src="{{ images[3].url }}" alt="Thumb 4"></label>
+            <label for="g5"><img src="{{ images[4].url }}" alt="Thumb 5"></label>
+            <label for="g6"><img src="{{ images[5].url }}" alt="Thumb 6"></label>
+          </div>
+        </div>
+
+        <div class="thumbs-horz">
+          <label for="g1"><img src="{{ images[0].url }}" alt="Thumb 1"></label>
+          <label for="g2"><img src="{{ images[1].url }}" alt="Thumb 2"></label>
+          <label for="g3"><img src="{{ images[2].url }}" alt="Thumb 3"></label>
+          <label for="g4"><img src="{{ images[3].url }}" alt="Thumb 4"></label>
+          <label for="g5"><img src="{{ images[4].url }}" alt="Thumb 5"></label>
+          <label for="g6"><img src="{{ images[5].url }}" alt="Thumb 6"></label>
+        </div>
+      </div>
+
+      <!-- DESCRIPTION -->
+      <div class="panel">
+        <div class="panel-head">Produktbeschreibung</div>
+        <div class="panel-body">
+          {{ description }}
+        </div>
+      </div>
+
+      <!-- BUYER INFO -->
+      <div class="info-sections">
+
+        <!-- DESKTOP CARDS -->
+        <div class="desktop-cards">
+          <div class="card">
+            <div class="card-header">Versandinformationen</div>
+            <div class="card-body">
+              Wir versenden weltweit, schnell, sicher und mit Sendungsverfolgung. <br>
+              Bei Lieferungen in Nicht-EU-Länder können zusätzliche Zölle, Steuern und Gebühren anfallen, die vom Käufer zu tragen sind.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Fachgerechter Einbau</div>
+            <div class="card-body">
+              Dieses Produkt entspricht den geltenden Anforderungen der Produktsicherheit. Es handelt sich um ein Ersatzteil für den fachgerechten Einbau durch qualifiziertes Fachpersonal. Der Einbau durch nicht geschulte Personen kann zu Funktionsbeeinträchtigungen und Sicherheitsrisiken führen. Bitte beachten Sie die technischen Vorgaben des Fahrzeugherstellers sowie ggf. nationale Vorschriften. Eine Haftung für Folgeschäden durch unsachgemäßen Einbau ist ausgeschlossen.
+              <br>
+              <br>
+              Der Einbau sollte ausschließlich durch eine autorisierte Fachwerkstatt erfolgen. Für Schäden durch unsachgemäße Montage übernehmen wir keine Haftung.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Kostenübernahme</div>
+            <div class="card-body">
+              <strong>Hinweis zur Kostenerstattung:</strong>
+              <br>
+              <br>         
+              Im Reklamationsfall übernehmen wir keine Kosten für Ein- oder Ausbau, Werkstattrechnungen oder sonstige Folgekosten. Ihre gesetzlichen Gewährleistungsrechte bleiben davon unberührt.
+              Rechtliches und Gewährleistung
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Rechtliches und Gewährleistung</div>
+            <div class="card-body">
+              Es gelten unsere Allgemeinen Geschäftsbedingungen (AGB). Mit dem Kauf erkennen Sie diese an. Die AGB finden Sie in unserem eBay-Shop unter Rechtliche Informationen des Verkäufers oder auf Anfrage.
+              <br>
+              <br>  
+              Die Gewährleistung bezieht sich ausschließlich auf Mängel, die bereits bei Übergabe bestanden. Schäden durch Verschleiß, unsachgemäßen Einbau oder entfernte Garantiesiegel sind davon ausgenommen.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Noch Fragen?</div>
+            <div class="card-body">
+              Wir helfen Ihnen gerne weiter persönlich, kompetent und zuverlässig.
+            </div>
+          </div>
+        </div>
+
+        <!-- MOBILE ACCORDION (unchanged behavior) -->
+        <div class="acc">
+          <details class="acc-item">
+            <summary>Versandinformationen</summary>
+            <div class="acc-body">
+              Wir versenden weltweit, schnell, sicher und mit Sendungsverfolgung. <br>
+              Bei Lieferungen in Nicht-EU-Länder können zusätzliche Zölle, Steuern und Gebühren anfallen, die vom Käufer zu tragen sind.
+            </div>
+          </details>
+
+          <details class="acc-item">
+            <summary>Fachgerechter Einbau</summary>
+            <div class="acc-body">
+              Dieses Produkt entspricht den geltenden Anforderungen der Produktsicherheit. 
+              Es handelt sich um ein Ersatzteil für den fachgerechten Einbau durch qualifiziertes Fachpersonal. 
+              Der Einbau durch nicht geschulte Personen kann zu Funktionsbeeinträchtigungen und Sicherheitsrisiken führen. 
+              Bitte beachten Sie die technischen Vorgaben des Fahrzeugherstellers sowie ggf. nationale Vorschriften. 
+              Eine Haftung für Folgeschäden durch unsachgemäßen Einbau ist ausgeschlossen.
+              <br>
+              <br>
+              Der Einbau sollte ausschließlich durch eine autorisierte Fachwerkstatt erfolgen. 
+              Für Schäden durch unsachgemäße Montage übernehmen wir keine Haftung.
+            </div>
+          </details>
+
+          <details class="acc-item">
+            <summary>Kostenübernahme</summary>
+            <div class="acc-body">
+              <strong>Hinweis zur Kostenerstattung:</strong>
+              <br>
+              <br>         
+              Im Reklamationsfall übernehmen wir keine Kosten für Ein- oder Ausbau, Werkstattrechnungen oder sonstige Folgekosten. 
+              Ihre gesetzlichen Gewährleistungsrechte bleiben davon unberührt.
+              Rechtliches und Gewährleistung
+            </div>
+          </details>
+
+          <details class="acc-item">
+            <summary>Rechtliches und Gewährleistung</summary>
+            <div class="acc-body">
+              Es gelten unsere Allgemeinen Geschäftsbedingungen (AGB). Mit dem Kauf erkennen Sie diese an. 
+              Die AGB finden Sie in unserem eBay-Shop unter Rechtliche Informationen des Verkäufers oder auf Anfrage.
+              <br>
+              <br>  
+              Die Gewährleistung bezieht sich ausschließlich auf Mängel, die bereits bei Übergabe bestanden. 
+              Schäden durch Verschleiß, unsachgemäßen Einbau oder entfernte Garantiesiegel sind davon ausgenommen.
+            </div>
+          </details>
+
+          <details class="acc-item">
+            <summary>Noch Fragen?</summary>
+            <div class="acc-body">
+              Wir helfen Ihnen gerne weiter persönlich, kompetent und zuverlässig.
+            </div>
+          </details>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER BOTTOM BAR -->
+  <div class="footerbar">
+    <div class="footerbar-inner">
+      <div class="fcol">
+        <h4>Nützliche Links</h4>
+        <a href="https://www.ebay.de/str/rlaudin" target="_blank">Besuchen Sie unseren Shop</a><br>
+        <a href="https://www.ebay.de/str/rlaudin?_tab=feedback" target="_blank">Feedback anzeigen</a><br>
+        <a href="https://www.ebay.de/str/rlaudin?_tab=about" target="_blank">Impressum</a><br>
+        <a href="https://www.ebay.de/cnt/intermediatedFAQ?requested=tradelaudin" target="_blank">Kundenservice</a>
+      </div>
+
+      <div class="fcol">
+        <h4>Feedback</h4>
+        Bei Fragen kontaktieren Sie uns bitte über eBay-Nachrichten. <br><br>
+        Wir helfen Ihnen gerne weiter.
+      </div>
+  
+      <!-- newsletter maybe later 
+      <div class="fcol">
+        <h4>Newsletter</h4>
+        Receive updates about new items and promotions in our store.<br><br>
+        <span style="display:inline-block;background:#2b2b2b;color:#fff;padding:8px 12px;border-radius:3px;font-weight:bold;">Sign up</span>
+      </div>
+      -->
+      
+      <div class="fcol" style="min-width:220px;">
+        <h4>Payments</h4>
+        <div class="payrow">
+          <img src="https://i.frg.im/PGeXoClH/paypal.jpg?v=1772425706.29?v=93a2807b-81d2-446d-8156-71e08e4f15c9" alt="PayPal">
+          <img src="https://i.frg.im/QLXOwbjd/visa.jpg?v=1772425978.417?v=7da24a01-05d2-4a7b-9b7b-08bbb2bd8b94" alt="VISA">
+          <img src="https://i.frg.im/eqYvoson/mastercard.jpg?v=1772425974.417?v=ede2f53f-175b-4751-b922-d4033093cbdc" alt="Mastercard">
+          <img src="https://i.frg.im/tcMMivMv/americanexpress.jpg?v=1772425970.48?v=1e4313e8-a45e-4ed9-9093-ff53ceda702a" alt="Americanexpress">
+        </div>
+      </div>
+    </div>
+
+    <div class="copyright">
+      Copyright © 2026. All Rights Reserved.
+    </div>
+  </div>
+
+</div>
