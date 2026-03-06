@@ -460,7 +460,18 @@
     margin:2px 0;
   }
   .fcol a:hover{ text-decoration:underline; }
-
+  
+  .fcol a.contact-btn{ color:#2b2b2b; } /* override contact button color */
+  
+  .contact-btn {
+    display: inline-block;
+    background: #ffffff;
+    color: #2b2b2b;
+    padding: 10px 25px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+  }
   .payrow{
     display:flex;
     gap:8px;
@@ -651,18 +662,14 @@
             <div class="slide s1"><img src="https://i.ebayimg.com/images/g/itkAAeSwAWlpkxPy/s-l1600.webp" alt="Product image 1"></div>
             <div class="slide s2"><img src="https://i.ebayimg.com/images/g/L0sAAeSwy~xpkxP-/s-l1600.webp" alt="Product image 2"></div>
             <div class="slide s3"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Product image 3"></div>
-            <div class="slide s4"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Product image 4"></div>
-            <div class="slide s5"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Product image 5"></div>
-            <div class="slide s6"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Product image 6"></div>
+            
           </div>
 
           <div class="thumbs-vert">
             <label for="g1"><img src="https://i.ebayimg.com/images/g/itkAAeSwAWlpkxPy/s-l1600.webp" alt="Thumb 1"></label>
             <label for="g2"><img src="https://i.ebayimg.com/images/g/L0sAAeSwy~xpkxP-/s-l1600.webp" alt="Thumb 2"></label>
             <label for="g3"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Thumb 3"></label>
-            <label for="g4"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Thumb 4"></label>
-            <label for="g5"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Thumb 5"></label>
-            <label for="g6"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Thumb 6"></label>
+            
           </div>
         </div>
 
@@ -670,9 +677,7 @@
           <label for="g1"><img src="https://i.ebayimg.com/images/g/itkAAeSwAWlpkxPy/s-l1600.webp" alt="Thumb 1"></label>
           <label for="g2"><img src="https://i.ebayimg.com/images/g/L0sAAeSwy~xpkxP-/s-l1600.webp" alt="Thumb 2"></label>
           <label for="g3"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Thumb 3"></label>
-          <label for="g4"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Thumb 4"></label>
-          <label for="g5"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Thumb 5"></label>
-          <label for="g6"><img src="https://i.ebayimg.com/images/g/cPoAAeSwzl1pkxQI/s-l1600.webp" alt="Thumb 6"></label>
+         
         </div>
       </div>
 
@@ -680,9 +685,9 @@
       <div class="panel">
         <div class="panel-head">Produktbeschreibung</div>
         <div class="panel-body">
-          Artikel-Zustand: gebraucht, technisch in einem guten Zustand, auf Funktion geprüft, mit Lagerspuren (siehe Bilder).<br><br>
-          Artikelnummer: A0009050010<br><br>
-          Worldwide Shipping
+          <strong> Artikel-Zustand:</strong> gebraucht, technisch in einem guten Zustand, auf Funktion geprüft, mit Lagerspuren (siehe Bilder).<br><br>
+          <strong> Artikelnummer: A0009050010 </strong><br><br>
+          <strong><u><em>Worldwide Shipping</em></u></strong>
         </div>
       </div>
 
@@ -816,9 +821,11 @@
       </div>
 
       <div class="fcol">
-        <h4>Kontakt</h4>
+        <h4>KONTAKT</h4>
         Bei Fragen kontaktieren Sie uns bitte über eBay-Nachrichten. <br><br>
-        Wir helfen Ihnen gerne weiter.
+        <a href="https://www.ebay.de/cnt/intermediatedFAQ?requested=tradelaudin" class="contact-btn" target="_blank">
+          Kontaktieren Sie uns
+        </a>
       </div>
 
       <div class="fcol" style="min-width:220px;">
